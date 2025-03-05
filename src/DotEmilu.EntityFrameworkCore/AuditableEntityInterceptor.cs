@@ -20,7 +20,7 @@ public class AuditableEntityInterceptor(IContextUser contextUser, TimeProvider t
     [
         EntityState.Added,
         EntityState.Modified,
-        EntityState.Modified
+        EntityState.Deleted
     ];
 
     private void SetAuditableData(DbContext? context)
