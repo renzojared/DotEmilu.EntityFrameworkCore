@@ -9,5 +9,6 @@ public static class DiContainer
         => services
             .AddSingleton(TimeProvider.System)
             .AddScoped<IContextUser, TContextUser>()
+            .AddScoped<ISaveChangesInterceptor, SoftDeleteInterceptor>()
             .AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
 }

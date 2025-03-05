@@ -20,7 +20,7 @@ public class AuditableEntityInterceptor(IContextUser contextUser, TimeProvider t
     [
         EntityState.Added,
         EntityState.Modified,
-        EntityState.Modified
+        EntityState.Deleted
     ];
 
     private void SetAuditableData(DbContext? context)
@@ -39,12 +39,7 @@ public class AuditableEntityInterceptor(IContextUser contextUser, TimeProvider t
                     entry.Entity.Created = utcNow;
                     break;
                 case EntityState.Modified when entry.Entity.IsDeleted:
-                    entry.Entity.DeletedBy = contextUser.Id;
-                    entry.Entity.Deleted = utcNow;
-                    break;
                 case EntityState.Deleted:
-                    entry.State = EntityState.Modified;
-                    entry.Entity.IsDeleted = true;
                     entry.Entity.DeletedBy = contextUser.Id;
                     entry.Entity.Deleted = utcNow;
                     break;
