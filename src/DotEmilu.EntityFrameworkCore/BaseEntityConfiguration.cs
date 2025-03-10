@@ -1,6 +1,7 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public class BaseEntityConfiguration : IEntityTypeConfiguration<BaseEntity>
+public class BaseEntityConfiguration(MappingStrategy strategy = MappingStrategy.Tpc, bool useRowVersion = false)
+    : IEntityTypeConfiguration<BaseEntity>
 {
     public void Configure(EntityTypeBuilder<BaseEntity> builder)
     {
@@ -13,13 +14,33 @@ public class BaseEntityConfiguration : IEntityTypeConfiguration<BaseEntity>
 
         builder
             .Property(s => s.IsDeleted)
+            .HasDefaultValue(false)
             .IsRequired();
 
-        builder
-            .Property<byte[]>(nameof(Version))
-            .IsRowVersion();
+        if (useRowVersion)
+            builder
+                .Property<byte[]>(nameof(Version))
+                .IsRowVersion()
+                .IsRequired();
 
         builder
             .HasQueryFilter(s => !s.IsDeleted);
+
+        builder
+            .HasIndex(s => s.IsDeleted);
+
+        switch (strategy)
+        {
+            case MappingStrategy.Tph:
+                builder.UseTphMappingStrategy();
+                break;
+            case MappingStrategy.Tpt:
+                builder.UseTptMappingStrategy();
+                break;
+            case MappingStrategy.Tpc:
+            default:
+                builder.UseTpcMappingStrategy();
+                break;
+        }
     }
 }
