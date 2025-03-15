@@ -1,6 +1,6 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public class AuditableEntityInterceptor(IContextUser contextUser, TimeProvider timeProvider) : SaveChangesInterceptor
+public sealed class AuditableEntityInterceptor(IContextUser contextUser, TimeProvider timeProvider) : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
