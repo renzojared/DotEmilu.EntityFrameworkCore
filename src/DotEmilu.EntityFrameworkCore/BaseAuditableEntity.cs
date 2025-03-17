@@ -34,12 +34,24 @@ public abstract class BaseAuditableEntity<TUserKey> : IBaseAuditableEntity<TUser
 }
 
 /// <summary>
+/// Represents an auditable entity that combines base entity properties with audit tracking information.
+/// This interface extends both IBaseEntity&lt;TKey&gt; and IBaseAuditableEntity&lt;TUserKey&gt;, providing
+/// a unified contract for entities that require both a primary key and audit details.
+/// </summary>
+/// <typeparam name="TKey">The type of the primary key for the entity.</typeparam>
+/// <typeparam name="TUserKey">The type of the user identifier for audit tracking.</typeparam>
+
+public interface IBaseAuditableEntity<TKey, TUserKey> : IBaseEntity<TKey>, IBaseAuditableEntity<TUserKey>
+    where TKey : struct
+    where TUserKey : struct;
+
+/// <summary>
 /// Abstract base class that combines the properties of a base entity and an auditable entity.
 /// Designed to be inherited by entities that require both an identifier and audit information.
 /// </summary>
 /// <typeparam name="TKey">Type of the primary key for the entity.</typeparam>
 /// <typeparam name="TUserKey">Type of the audit user identifier.</typeparam>
-public abstract class BaseAuditableEntity<TKey, TUserKey> : IBaseEntity<TKey>, IBaseAuditableEntity<TUserKey>
+public abstract class BaseAuditableEntity<TKey, TUserKey> : IBaseAuditableEntity<TKey, TUserKey>
     where TKey : struct
     where TUserKey : struct
 {
