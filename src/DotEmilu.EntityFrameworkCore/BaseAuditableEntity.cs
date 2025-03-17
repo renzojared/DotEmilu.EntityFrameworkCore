@@ -52,10 +52,3 @@ public abstract class BaseAuditableEntity<TKey, TUserKey> : IBaseEntity<TKey>, I
     public DateTimeOffset? Deleted { get; set; }
     public TUserKey? DeletedBy { get; set; }
 }
-
-/// <summary>
-/// Abstract base class for auditable entities, using Guid as the primary key and user identifier.
-/// This class will be removed in future versions.
-/// Please use BaseAuditableEntity&lt;TKey, TUserKey&gt; instead.
-/// </summary>
-public abstract class BaseAuditableEntity : BaseAuditableEntity<Guid, Guid>;
