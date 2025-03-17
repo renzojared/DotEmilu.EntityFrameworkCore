@@ -1,23 +1,27 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public class BaseEntityConfiguration(MappingStrategy strategy = MappingStrategy.Tpc, bool useRowVersion = false)
-    : IEntityTypeConfiguration<BaseEntity>
+public sealed class BaseEntityConfiguration<TBaseEntity, TKey>(MappingStrategy strategy, bool enableRowVersion)
+    : IEntityTypeConfiguration<TBaseEntity>
+    where TBaseEntity : class, IBaseEntity<TKey>
+    where TKey : struct
 {
-    public void Configure(EntityTypeBuilder<BaseEntity> builder)
+    public void Configure(EntityTypeBuilder<TBaseEntity> builder)
     {
         builder
             .HasKey(s => s.Id);
 
         builder
             .Property(s => s.Id)
+            .HasColumnOrder(0)
             .ValueGeneratedOnAdd();
 
         builder
             .Property(s => s.IsDeleted)
+            .HasColumnOrder(1)
             .HasDefaultValue(false)
             .IsRequired();
 
-        if (useRowVersion)
+        if (enableRowVersion)
             builder
                 .Property<byte[]>(nameof(Version))
                 .IsRowVersion()
@@ -29,18 +33,7 @@ public class BaseEntityConfiguration(MappingStrategy strategy = MappingStrategy.
         builder
             .HasIndex(s => s.IsDeleted);
 
-        switch (strategy)
-        {
-            case MappingStrategy.Tph:
-                builder.UseTphMappingStrategy();
-                break;
-            case MappingStrategy.Tpt:
-                builder.UseTptMappingStrategy();
-                break;
-            case MappingStrategy.Tpc:
-            default:
-                builder.UseTpcMappingStrategy();
-                break;
-        }
+        builder
+            .ApplyMappingStrategy(strategy);
     }
 }
