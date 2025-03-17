@@ -1,9 +1,15 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public class BaseAuditableEntityConfiguration : IEntityTypeConfiguration<BaseAuditableEntity>
+public sealed class BaseAuditableEntityConfiguration<TBaseAuditableEntity, TUserKey>(MappingStrategy strategy)
+    : IEntityTypeConfiguration<TBaseAuditableEntity>
+    where TBaseAuditableEntity : class, IBaseAuditableEntity<TUserKey>
+    where TUserKey : struct
 {
-    public void Configure(EntityTypeBuilder<BaseAuditableEntity> builder)
+    public void Configure(EntityTypeBuilder<TBaseAuditableEntity> builder)
     {
+        builder
+            .HasNoKey();
+
         builder
             .Property(s => s.Created)
             .IsRequired();
@@ -27,5 +33,8 @@ public class BaseAuditableEntityConfiguration : IEntityTypeConfiguration<BaseAud
         builder
             .Property(s => s.DeletedBy)
             .IsRequired(false);
+
+        builder
+            .ApplyMappingStrategy(strategy);
     }
 }
