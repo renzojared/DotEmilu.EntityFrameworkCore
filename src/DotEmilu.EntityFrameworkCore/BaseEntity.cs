@@ -24,10 +24,3 @@ public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
     public TKey Id { get; set; }
     public bool IsDeleted { get; set; }
 }
-
-/// <summary>
-/// Abstract base class for entities, using Guid as the primary key.
-/// This class will be removed in future versions.
-/// Please use BaseEntity&lt;TKey&gt; instead.
-/// </summary>
-public abstract class BaseEntity : BaseEntity<Guid>;
