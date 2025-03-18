@@ -1,6 +1,6 @@
 namespace Example.SqlServer.Entities;
 
-public class Person : BaseEntity
+public class Person : BaseEntity<Guid>
 {
     public string Name { get; set; } = null!;
     public string? LastName { get; set; }
