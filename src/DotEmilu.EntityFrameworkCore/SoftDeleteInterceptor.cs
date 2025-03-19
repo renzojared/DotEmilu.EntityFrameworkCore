@@ -1,7 +1,6 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public sealed class SoftDeleteInterceptor<TKey> : SaveChangesInterceptor
-    where TKey : struct
+public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -21,7 +20,7 @@ public sealed class SoftDeleteInterceptor<TKey> : SaveChangesInterceptor
     {
         if (context is null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<IBaseEntity<TKey>>())
+        foreach (var entry in context.ChangeTracker.Entries<IBaseEntity>())
         {
             if (entry.State != EntityState.Deleted) continue;
 
