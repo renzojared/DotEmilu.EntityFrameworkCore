@@ -1,5 +1,7 @@
 // Global using directives
 
+global using System.Reflection;
+global using DotEmilu.EntityFrameworkCore.Extensions;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using Microsoft.EntityFrameworkCore.Diagnostics;
