@@ -15,11 +15,10 @@ public interface IBaseEntity
 /// Although any struct type is allowed, using common types facilitates interoperability and performance.
 /// </summary>
 /// <typeparam name="TKey">Type of the primary key.</typeparam>
-public interface IBaseEntity<TKey>
+public interface IBaseEntity<TKey> : IBaseEntity
     where TKey : struct
 {
     TKey Id { get; set; }
-    bool IsDeleted { get; set; }
 }
 
 /// <summary>

@@ -6,7 +6,7 @@ namespace DotEmilu.EntityFrameworkCore;
 /// Although any struct type is allowed, using common types facilitates interoperability and performance.
 /// </summary>
 /// <typeparam name="TUserKey">Type of the audit user identifier.</typeparam>
-public interface IBaseAuditableEntity<TUserKey>
+public interface IBaseAuditableEntity<TUserKey> : IBaseEntity
     where TUserKey : struct
 {
     public DateTimeOffset Created { get; set; }
@@ -25,6 +25,7 @@ public interface IBaseAuditableEntity<TUserKey>
 public abstract class BaseAuditableEntity<TUserKey> : IBaseAuditableEntity<TUserKey>
     where TUserKey : struct
 {
+    public bool IsDeleted { get; set; }
     public DateTimeOffset Created { get; set; }
     public TUserKey CreatedBy { get; set; }
     public DateTimeOffset LastModified { get; set; }
