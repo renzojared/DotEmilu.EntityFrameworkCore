@@ -1,6 +1,9 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public sealed class AuditableEntityInterceptor(IContextUser contextUser, TimeProvider timeProvider) : SaveChangesInterceptor
+public sealed class AuditableEntityInterceptor<TUserKey>(
+    IContextUser<TUserKey> contextUser,
+    TimeProvider timeProvider) : SaveChangesInterceptor
+    where TUserKey : struct
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -27,7 +30,7 @@ public sealed class AuditableEntityInterceptor(IContextUser contextUser, TimePro
     {
         if (context is null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
+        foreach (var entry in context.ChangeTracker.Entries<IBaseAuditableEntity<TUserKey>>())
         {
             if (!_entityStates.Contains(entry.State) && !HasChangedOwnedEntities(entry)) continue;
             var utcNow = timeProvider.GetUtcNow();
@@ -42,6 +45,13 @@ public sealed class AuditableEntityInterceptor(IContextUser contextUser, TimePro
                 case EntityState.Deleted:
                     entry.Entity.DeletedBy = contextUser.Id;
                     entry.Entity.Deleted = utcNow;
+
+                    if (entry.State == EntityState.Deleted)
+                    {
+                        entry.State = EntityState.Modified;
+                        entry.Entity.IsDeleted = true;
+                    }
+
                     break;
             }
 
