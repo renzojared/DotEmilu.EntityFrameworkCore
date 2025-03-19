@@ -16,22 +16,13 @@ public sealed class BaseEntityConfiguration<TBaseEntity, TKey>(MappingStrategy s
             .ValueGeneratedOnAdd();
 
         builder
-            .Property(s => s.IsDeleted)
-            .HasColumnOrder(1)
-            .HasDefaultValue(false)
-            .IsRequired();
+            .UseIsDeleted(order: 1);
 
         if (enableRowVersion)
             builder
                 .Property<byte[]>(nameof(Version))
                 .IsRowVersion()
                 .IsRequired();
-
-        builder
-            .HasQueryFilter(s => !s.IsDeleted);
-
-        builder
-            .HasIndex(s => s.IsDeleted);
 
         builder
             .ApplyMappingStrategy(strategy);
