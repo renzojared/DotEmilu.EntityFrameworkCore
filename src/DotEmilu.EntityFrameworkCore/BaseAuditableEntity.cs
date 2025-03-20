@@ -41,7 +41,6 @@ public abstract class BaseAuditableEntity<TUserKey> : IBaseAuditableEntity<TUser
 /// </summary>
 /// <typeparam name="TKey">The type of the primary key for the entity.</typeparam>
 /// <typeparam name="TUserKey">The type of the user identifier for audit tracking.</typeparam>
-
 public interface IBaseAuditableEntity<TKey, TUserKey> : IBaseEntity<TKey>, IBaseAuditableEntity<TUserKey>
     where TKey : struct
     where TUserKey : struct;
