@@ -1,6 +1,6 @@
 namespace Example.SqlServer.Entities;
 
-public class Song : BaseAuditableEntity<Guid>
+public class Song : BaseAuditableEntity<Guid, Guid>
 {
     public required string Name { get; set; }
 }
