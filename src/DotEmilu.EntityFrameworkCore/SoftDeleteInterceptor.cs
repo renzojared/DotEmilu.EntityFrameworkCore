@@ -20,7 +20,7 @@ public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
     {
         if (context is null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseEntity>())
+        foreach (var entry in context.ChangeTracker.Entries<IBaseEntity>())
         {
             if (entry.State != EntityState.Deleted) continue;
 

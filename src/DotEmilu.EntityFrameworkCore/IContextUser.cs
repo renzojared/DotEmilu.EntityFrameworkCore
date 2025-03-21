@@ -1,6 +1,7 @@
 namespace DotEmilu.EntityFrameworkCore;
 
-public interface IContextUser
+public interface IContextUser<out TUserKey>
+    where TUserKey : struct
 {
-    Guid Id { get; }
+    TUserKey Id { get; }
 }

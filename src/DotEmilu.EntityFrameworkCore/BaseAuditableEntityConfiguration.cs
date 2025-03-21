@@ -35,6 +35,9 @@ public sealed class BaseAuditableEntityConfiguration<TBaseAuditableEntity, TUser
             .IsRequired(false);
 
         builder
+            .UseIsDeleted();
+
+        builder
             .ApplyMappingStrategy(strategy);
     }
 }

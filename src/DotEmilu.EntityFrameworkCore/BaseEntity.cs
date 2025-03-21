@@ -1,16 +1,24 @@
 namespace DotEmilu.EntityFrameworkCore;
 
 /// <summary>
+/// Represents an entity with soft delete support.
+/// Indicates whether the entity is marked as deleted without being physically removed from the database.
+/// </summary>
+public interface IBaseEntity
+{
+    bool IsDeleted { get; set; }
+}
+
+/// <summary>
 /// Represents the type of the primary key for the entity.
 /// It is recommended to use numeric types (such as int, long) or Guid for efficient identifiers.
 /// Although any struct type is allowed, using common types facilitates interoperability and performance.
 /// </summary>
 /// <typeparam name="TKey">Type of the primary key.</typeparam>
-public interface IBaseEntity<TKey>
+public interface IBaseEntity<TKey> : IBaseEntity
     where TKey : struct
 {
     TKey Id { get; set; }
-    bool IsDeleted { get; set; }
 }
 
 /// <summary>
