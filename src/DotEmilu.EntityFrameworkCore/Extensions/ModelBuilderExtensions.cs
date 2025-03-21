@@ -21,6 +21,38 @@ public static class ModelBuilderExtensions
     }
 
     public static ModelBuilder ApplyBaseEntityConfiguration(this ModelBuilder modelBuilder,
+        Assembly assembly,
+        Dictionary<Type, (MappingStrategy strategy, bool enableRowVersion)>? keyTypeConfigurations = null)
+    {
+        var entityTypes = assembly
+            .GetTypes()
+            .Where(t => t is { IsAbstract: false, IsInterface: false } &&
+                        t.GetInterfaces().Any(IsBaseEntityInterface));
+
+        foreach (var entityType in entityTypes)
+        {
+            var keyType = entityType.GetInterfaces()
+                .First(IsBaseEntityInterface)
+                .GetGenericArguments()[0];
+
+            var (strategy, enableRowVersion) =
+                keyTypeConfigurations?.TryGetValue(keyType, out var configuration) is true
+                    ? configuration
+                    : (MappingStrategy.Tpc, false);
+
+            var configType = typeof(BaseEntityConfiguration<,>).MakeGenericType(entityType, keyType);
+            var configInstance = Activator.CreateInstance(configType, strategy, enableRowVersion);
+            modelBuilder.ApplyConfiguration((dynamic)configInstance!);
+        }
+
+        return modelBuilder;
+
+        static bool IsBaseEntityInterface(Type i)
+            => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IBaseEntity<>);
+    }
+
+    [Obsolete("Use ApplyBaseEntityConfiguration(Assembly) instead.", true)]
+    public static ModelBuilder ApplyBaseEntityConfiguration(this ModelBuilder modelBuilder,
         MappingStrategy strategy = MappingStrategy.Tpc, bool enableRowVersion = false, params Type[] keyTypes)
     {
         if (keyTypes.Any(type => !type.IsValueType))
@@ -63,6 +95,37 @@ public static class ModelBuilderExtensions
         return modelBuilder;
     }
 
+    public static ModelBuilder ApplyBaseAuditableEntityConfiguration(this ModelBuilder modelBuilder,
+        Assembly assembly,
+        Dictionary<Type, MappingStrategy>? userKeyConfigurations = null)
+    {
+        var entityTypes = assembly
+            .GetTypes()
+            .Where(t => t is { IsAbstract: false, IsInterface: false } &&
+                        t.GetInterfaces().Any(IsBaseAuditableEntityInterface));
+
+        foreach (var entityType in entityTypes)
+        {
+            var userKeyType = entityType.GetInterfaces()
+                .First(IsBaseAuditableEntityInterface)
+                .GetGenericArguments()[0];
+
+            var strategy = userKeyConfigurations?.TryGetValue(userKeyType, out var config) is true
+                ? config
+                : MappingStrategy.Tpc;
+
+            var configType = typeof(BaseAuditableEntityConfiguration<,>).MakeGenericType(entityType, userKeyType);
+            var configInstance = Activator.CreateInstance(configType, strategy);
+            modelBuilder.ApplyConfiguration((dynamic)configInstance!);
+        }
+
+        return modelBuilder;
+
+        static bool IsBaseAuditableEntityInterface(Type i)
+            => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IBaseAuditableEntity<>);
+    }
+
+    [Obsolete("Use ApplyBaseAuditableEntityConfiguration(Assembly) instead.", true)]
     public static ModelBuilder ApplyBaseAuditableEntityConfiguration(this ModelBuilder modelBuilder,
         MappingStrategy strategy = MappingStrategy.Tpc, params Type[] userKeyTypes)
     {
