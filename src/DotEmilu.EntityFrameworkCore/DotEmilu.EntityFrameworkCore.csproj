@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.0.3</Version>
+        <Version>2.0.0</Version>
         <Title>DotEmilu EF Core</Title>
         <Authors>renzojared</Authors>
         <Description>Simple .NET library to work with ef core</Description>
@@ -17,7 +17,7 @@
         <PackageTags>interceptor;entity;auditable;entity-framework-core;renzojared</PackageTags>
         <PackageDescription>Simple .NET library to work with ef core</PackageDescription>
         <PackageReleaseNotes>
-            Added database facade in the Unit of Work to enable transaction support.
+            Added generic support for entities, soft delete handling, and improved DI and configuration.
         </PackageReleaseNotes>
         <RepositoryUrl>https://github.com/renzojared/DotEmilu.EntityFrameworkCore</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
