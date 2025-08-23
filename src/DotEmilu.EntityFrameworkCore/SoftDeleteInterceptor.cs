@@ -24,7 +24,7 @@ public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
         {
             if (entry.State != EntityState.Deleted) continue;
 
-            entry.State = EntityState.Modified;
+            entry.State = EntityState.Unchanged;
             entry.Entity.IsDeleted = true;
         }
     }
