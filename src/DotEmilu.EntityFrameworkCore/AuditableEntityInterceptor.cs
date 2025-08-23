@@ -43,15 +43,10 @@ public sealed class AuditableEntityInterceptor<TUserKey>(
                     break;
                 case EntityState.Modified when entry.Entity.IsDeleted:
                 case EntityState.Deleted:
+                    entry.State = EntityState.Unchanged;
+                    entry.Entity.IsDeleted = true;
                     entry.Entity.DeletedBy = contextUser.Id;
                     entry.Entity.Deleted = utcNow;
-
-                    if (entry.State == EntityState.Deleted)
-                    {
-                        entry.State = EntityState.Modified;
-                        entry.Entity.IsDeleted = true;
-                    }
-
                     break;
             }
 
