@@ -11,6 +11,10 @@ public class SqlServerContext(DbContextOptions<SqlServerContext> options) : DbCo
             .ApplyBaseAuditableEntityConfiguration(Assembly.GetExecutingAssembly())
             .ApplyBaseEntityConfiguration(Assembly.GetExecutingAssembly())
             .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.Entity<Song>()
+            .Property(s => s.Type)
+            .HasFormattedComment("{0} = {2}", true);
     }
 
     public DbSet<Person> Persons => Set<Person>();
