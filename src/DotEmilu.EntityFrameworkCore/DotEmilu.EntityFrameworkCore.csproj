@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Title>DotEmilu EF Core</Title>
         <Authors>renzojared</Authors>
         <Description>Simple .NET library to work with ef core</Description>
@@ -17,7 +17,10 @@
         <PackageTags>interceptor;entity;auditable;entity-framework-core;renzojared</PackageTags>
         <PackageDescription>Simple .NET library to work with ef core</PackageDescription>
         <PackageReleaseNotes>
-            Added generic support for entities, soft delete handling, and improved DI and configuration.
+            - Fix: prevent state change to Modified for deleted entities in SoftDeleteInterceptor.
+            - Fix: ensure deleted entities remain Unchanged in AuditableEntityInterceptor.
+            - Feat: enhanced UseIsDeleted with short conversion, indexing, and query filtering options.
+            - Feat: added HasFormattedComment for enums with customizable smart comments.
         </PackageReleaseNotes>
         <RepositoryUrl>https://github.com/renzojared/DotEmilu.EntityFrameworkCore</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
