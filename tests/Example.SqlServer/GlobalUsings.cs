@@ -1,5 +1,6 @@
 // Global using directives
 
+global using System.ComponentModel;
 global using System.Reflection;
 global using DotEmilu.EntityFrameworkCore;
 global using Example.SqlServer;

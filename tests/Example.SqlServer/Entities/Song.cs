@@ -3,6 +3,7 @@ namespace Example.SqlServer.Entities;
 public class Song : BaseAuditableEntity<Guid, Guid>
 {
     public required string Name { get; set; }
+    public SongType Type { get; set; }
 }
 
 public class SongConfiguration : IEntityTypeConfiguration<Song>
@@ -14,4 +15,11 @@ public class SongConfiguration : IEntityTypeConfiguration<Song>
             .HasMaxLength(100)
             .IsRequired();
     }
+}
+
+[Description("Some songs")]
+public enum SongType
+{
+    Salsa,
+    [Description("Rock & Roll")] Rock
 }
