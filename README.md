@@ -1,4 +1,7 @@
-# DotEmilu EF Core
+# ⚠️ DotEmilu EF Core - ARCHIVED
+
+> **This repository is archived.** Its functionality has been merged into the main repository:  
+> 👉 [DotEmilu](https://github.com/renzojared/DotEmilu)
 
 A simple, easy-to-use .NET library designed for EF Core interceptors and auditable entities.
 
